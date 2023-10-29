@@ -1,24 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState, createContext } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from './components/Home';
+import Register from './components/Register';
+import Login from './components/Login';
+import Replies from './components/Replies';
+import Nav from './components/Nav';
+import { Auth } from "./auth/Auth";
 
-function App() {
+export const AppContext = createContext(null);
+
+const App = () => {
+  const [token, setToken] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContext.Provider value={{ token, setToken }}>
+      <div className="App">
+        <Nav />
+        <Routes>
+          <Route path='/users/login' element={<Login />} />
+          <Route path='/users/register' element={<Register />} />
+          <Route path='/dashboard' element={<Home />} />
+          <Route path='/:id/replies' element={<Replies />} />
+        </Routes>
+      </div>
+    </AppContext.Provider>
   );
 }
 
